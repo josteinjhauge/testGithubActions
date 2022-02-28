@@ -22,7 +22,7 @@ jobs:
 
       - name: bytt branch develop
         run: git checkout ${{github.ref}}
-        
+
       # lager release branch
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
@@ -38,6 +38,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: release/${{ github.event.inputs.version }} 
-          #${{ github.ref }}
           base: main
           title: "Release/${{ github.event.inputs.version }}"
