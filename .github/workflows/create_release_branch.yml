@@ -34,6 +34,7 @@ jobs:
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: ${{ github.ref }}
+          head: release/${{ github.event.inputs.version }} 
+          #${{ github.ref }}
           base: main
           title: "Release/${{ github.event.inputs.version }}"
