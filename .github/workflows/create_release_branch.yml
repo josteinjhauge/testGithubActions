@@ -20,12 +20,15 @@ jobs:
       #     git config user.name "Github actions"
       #     git config user.email noreply@github.com
 
-    #lager release branch
+      #lager release branch
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
 
       - name: Push upstream release branch
         run: git push origin release/${{ github.event.inputs.version }}
+
+      - name: log branch name
+        run: echo "branchname ${{github.ref}}"
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
@@ -33,4 +36,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           head: ${{ github.ref }}
           base: main
-          title: "Release ${{ github.event.inputs.version }}"
+          title: "Release/${{ github.event.inputs.version }}"
