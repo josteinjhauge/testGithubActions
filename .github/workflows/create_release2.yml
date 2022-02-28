@@ -1,27 +1,35 @@
-name: "Lag release2"
+name: "tag and make github release"
 
 on:
-  workflow_dispatch:
-    inputs:
-      version: 
-        description: 'versjonsnummer.'
-        required: true
+ push:
+    branches:
+      - main
 
 jobs:
-  build:
-    name: 'Lag release'
+  job_1:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Git branch name
+        id: git-branch-name
+        uses: EthanSK/git-branch-name-action@v1
+      - name: Echo the branch name
+        run: echo "Branch name ${GIT_BRANCH_NAME}"
+  # build:
+  #   needs: job_1
+  #   name: 'create release'
+  #   runs-on: ubuntu-latest
+  #   if: contains(${GIT_BRANCH_NAME}, 'release')
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: Release/${{ github.event.inputs.version }}
-          body: 'Beskrivelse av release'
-          draft: false
+  #     - name: Create Release
+  #       id: create_release
+  #       uses: actions/create-release@v1
+  #       env:
+  #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: v${{ github.event.inputs.version }}
+  #         release_name: Release/${{ github.event.inputs.version }}
+  #         body: 'Beskrivelse av release'
+  #         draft: false
