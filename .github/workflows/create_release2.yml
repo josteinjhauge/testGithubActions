@@ -1,45 +1,47 @@
 name: "tag and make github release"
 
 on:
- push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      version: 
+        description: 'versjonsnummer.'
+        required: true
 
 jobs:
-  test_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: test 
-        
-        run: echo "navn på PR ${{github.event.pull_request.title}}"
-  job_1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git branch name
-        id: git-branch-name
-        uses: EthanSK/git-branch-name-action@v1
-      - name: Echo the branch name
-        run: |
-         echo "Branch name ${GIT_BRANCH_NAME}"
-         echo "PR-branch name ${{github.event.pull_request.head.ref}}"
-         echo "commit message ${{github.event.head_commit.message}}"
-        
-  # build:
-  #   needs: job_1
-  #   name: 'create release'
+  # test_job:
   #   runs-on: ubuntu-latest
-  #   if: contains(${GIT_BRANCH_NAME}, 'release')
   #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  #     - name: test 
+        
+  #       run: echo "navn på PR ${{github.event.pull_request.title}}"
+  # job_1:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Git branch name
+  #       id: git-branch-name
+  #       uses: EthanSK/git-branch-name-action@v1
+  #     - name: Echo the branch name
+  #       run: |
+  #        echo "Branch name ${GIT_BRANCH_NAME}"
+  #        echo "PR-branch name ${{github.event.pull_request.head.ref}}"
+  #        echo "commit message ${{github.event.head_commit.message}}"
+        
+  build:
+    # needs: job_1
+    name: 'create release'
+    runs-on: ubuntu-latest
+    # if: contains(${GIT_BRANCH_NAME}, 'release')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Create Release
-  #       id: create_release
-  #       uses: actions/create-release@v1
-  #       env:
-  #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: v${{ github.event.inputs.version }}
-  #         release_name: Release/${{ github.event.inputs.version }}
-  #         body: 'Beskrivelse av release'
-  #         draft: false
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          release_name: Release/${{ github.event.inputs.version }}
+          body: 'Beskrivelse av release'
+          draft: false
