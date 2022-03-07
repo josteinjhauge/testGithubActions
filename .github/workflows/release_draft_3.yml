@@ -12,8 +12,7 @@ on:
         required: true
 jobs:
   release:
-    # if: contains(${github.event.inputs.type}:lower(), 'release')
-
+    if: contains(${{github.event.inputs.type}}, 'release' || 'Release')
     name: 'Lag release'
     runs-on: ubuntu-latest
     steps:
@@ -36,16 +35,22 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ github.event.inputs.version }}
-          release_name: Release/${{ github.event.inputs.version }}
+          release_name: release/${{ github.event.inputs.version }}
           body: 'Beskrivelse av release'
           draft: false
+
+  pull-request:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: Release/${{ github.event.inputs.version }} 
+          head: release/${{ github.event.inputs.version }} 
           base: main
           title: "Release/${{ github.event.inputs.version }}"
+
   test_job:
     if: contains(${{github.event.inputs.type}}, 'release' || 'Release')
     name: 'test jobb'
