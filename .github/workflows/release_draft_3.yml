@@ -66,6 +66,8 @@ jobs:
     name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
+      - name: 'log input'
+        run: echo '${{github.event.inputs.type}}'
       - name: 'write yes'
         run: echo 'yes'
 
