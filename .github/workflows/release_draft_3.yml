@@ -47,7 +47,7 @@ jobs:
           base: main
           title: "Release/${{ github.event.inputs.version }}"
   test_job:
-    if: contains(${{lower(github.event.inputs.type)}}, 'release')
+    if: contains(${{github.event.inputs.type}}, 'release' || 'Release')
     name: 'test jobb'
     runs-on: ubuntu-latest
     steps:
