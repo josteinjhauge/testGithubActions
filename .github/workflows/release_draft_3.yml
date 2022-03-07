@@ -47,13 +47,13 @@ jobs:
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: release/${{ github.event.inputs.version }} 
+          head: Release/${{ github.event.inputs.version }} 
           base: main
           title: "Release/${{ github.event.inputs.version }}"
 
-  test_job:
-    if: contains(${{github.event.inputs.type}}, 'release' || 'Release')
-    name: 'test jobb'
+  hotfix:
+    if: contains(${{github.event.inputs.type}}, 'hotfix' || 'Hotfix')
+    name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
       - name: 'write yes'
