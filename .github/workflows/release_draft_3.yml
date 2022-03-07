@@ -1,12 +1,16 @@
-name: Create a release pull-request
+name: Create a release and pull-request
 on:
   workflow_dispatch:
     inputs:
       version: 
         description: 'versjonsnummer.'
         required: true
+      type:
+        description: "type: release/hotfix"
+        required: true
 jobs:
-  build:
+  release:
+    # if: contains(${github.event.inputs.type}:lower(), 'release')
     name: 'Lag release'
     runs-on: ubuntu-latest
     steps:
@@ -22,26 +26,27 @@ jobs:
         run: git checkout ${{github.ref}}
 
       # lager release branch
-      - name: Create release branch
-        run: git checkout -b release/${{ github.event.inputs.version }}
-
-      - name: Push upstream release branch
-        run: git push origin release/${{ github.event.inputs.version }}
-
-      - name: log branch name
-        run: echo "branchname ${{github.ref}}"
-
-  release_pull_request:
-    runs-on: ubuntu-latest
-    name: release_pull_request
-    steps:
-      # - name: checkout
-      #   uses: actions/checkout@v1
-      - name: create-release-pr
-        uses: grassedge/git-pr-release-action@v1.0
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: v${{ github.event.inputs.version }}
+          release_name: Release/${{ github.event.inputs.version }}
+          body: 'Beskrivelse av release'
+          draft: false
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: Release/${{ github.event.inputs.version }} 
           base: main
-          head: release/${{ github.event.inputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          labels: a,b,c
-          assign: true
+          title: "Release/${{ github.event.inputs.version }}"
+  test_job:
+    if: contains(${{lower(github.event.inputs.type)}}, 'release')
+    name: 'test jobb'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'write yes'
+        run: echo 'yes'
