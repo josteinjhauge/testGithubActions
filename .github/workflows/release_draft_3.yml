@@ -1,4 +1,6 @@
+
 name: Create a release and pull-request
+
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +13,7 @@ on:
 jobs:
   release:
     # if: contains(${github.event.inputs.type}:lower(), 'release')
+
     name: 'Lag release'
     runs-on: ubuntu-latest
     steps:
@@ -50,3 +53,4 @@ jobs:
     steps:
       - name: 'write yes'
         run: echo 'yes'
+
