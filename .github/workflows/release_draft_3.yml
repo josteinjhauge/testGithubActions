@@ -63,6 +63,7 @@ jobs:
 
   hotfix:
     if: "${{github.event.inputs.type == 'hotfix'}}"
+
     name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
