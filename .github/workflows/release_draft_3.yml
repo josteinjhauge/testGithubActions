@@ -12,7 +12,7 @@ on:
         required: true
 jobs:
   release:
-    # if: contains(${github.event.inputs.type}:lower(), 'release')
+    if: "${{github.event.inputs.type == 'release' || 'Release'}}"
 
     name: 'Lag release'
     runs-on: ubuntu-latest
@@ -29,28 +29,46 @@ jobs:
         run: git checkout ${{github.ref}}
 
       # lager release branch
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: Release/${{ github.event.inputs.version }}
-          body: 'Beskrivelse av release'
-          draft: false
+      - name: Create release branch
+        run: git checkout -b release/${{ github.event.inputs.version }}
+
+      - name: Push upstream release branch
+        run: git push origin release/${{ github.event.inputs.version }}
+
+      - name: log branch name
+        run: echo "branchname ${{github.ref}}"
+        # lager github-release
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v${{ github.event.inputs.version }}
+      #     release_name: release/${{ github.event.inputs.version }}
+      #     body: 'Beskrivelse av release'
+      #     draft: false
+
+  pull-request:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          head: Release/${{ github.event.inputs.version }} 
+          head: release/${{ github.event.inputs.version }} 
           base: main
           title: "Release/${{ github.event.inputs.version }}"
-  test_job:
-    if: contains(${{lower(github.event.inputs.type)}}, 'release')
-    name: 'test jobb'
+
+  hotfix:
+    if: "${{github.event.inputs.type == 'hotfix' || 'Hotfix'}}"
+    name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
+      - name: 'log input'
+        run: echo '${{github.event.inputs.type}}'
+
       - name: 'write yes'
         run: echo 'yes'
 
