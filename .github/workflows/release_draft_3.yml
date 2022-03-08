@@ -69,6 +69,6 @@ jobs:
       - name: 'log input'
         run: echo '${{github.event.inputs.type}}'
 
-      - name: 'write yes'
+      - name: 'er jeg en hotfix?'
         run: echo 'yes'
 
