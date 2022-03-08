@@ -36,13 +36,13 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Merge master into dev branch
+      - name: Merge master into develop branch
         uses: thomaseizinger/create-pull-request@1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           head: main
-          base: dev
+          base: develop
           title: Merge master into dev branch
           body: |
             This PR merges the master branch back into dev.
