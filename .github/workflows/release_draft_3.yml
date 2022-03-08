@@ -13,6 +13,7 @@ on:
 jobs:
   release:
     if: "${{github.event.inputs.type == 'release' || 'Release'}}"
+
     name: 'Lag release'
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +29,6 @@ jobs:
         run: git checkout ${{github.ref}}
 
       # lager release branch
-       
       - name: Create release branch
         run: git checkout -b release/${{ github.event.inputs.version }}
 
@@ -68,6 +68,7 @@ jobs:
     steps:
       - name: 'log input'
         run: echo '${{github.event.inputs.type}}'
+
       - name: 'write yes'
         run: echo 'yes'
 
