@@ -12,7 +12,7 @@ on:
         required: true
 jobs:
   release:
-    if: "${{github.event.inputs.type == 'release' || 'Release'}}"
+    if: "${{github.event.inputs.type == 'release'}}"
 
     name: 'Lag release'
     runs-on: ubuntu-latest
@@ -62,13 +62,14 @@ jobs:
           title: "Release/${{ github.event.inputs.version }}"
 
   hotfix:
-    if: "${{github.event.inputs.type == 'hotfix' || 'Hotfix'}}"
+    if: "${{github.event.inputs.type == 'hotfix'}}"
+
     name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
       - name: 'log input'
         run: echo '${{github.event.inputs.type}}'
 
-      - name: 'write yes'
+      - name: 'er jeg en hotfix?'
         run: echo 'yes'
 
