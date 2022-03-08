@@ -12,7 +12,7 @@ on:
         required: true
 jobs:
   release:
-    if: contains(${{github.event.inputs.type}}, 'release' || 'Release')
+    if: "${{github.event.inputs.type == 'release' || 'Release'}}"
     name: 'Lag release'
     runs-on: ubuntu-latest
     steps:
@@ -38,16 +38,16 @@ jobs:
       - name: log branch name
         run: echo "branchname ${{github.ref}}"
         # lager github-release
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: release/${{ github.event.inputs.version }}
-          body: 'Beskrivelse av release'
-          draft: false
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v${{ github.event.inputs.version }}
+      #     release_name: release/${{ github.event.inputs.version }}
+      #     body: 'Beskrivelse av release'
+      #     draft: false
 
   pull-request:
     needs: release
@@ -62,7 +62,7 @@ jobs:
           title: "Release/${{ github.event.inputs.version }}"
 
   hotfix:
-    if: contains(${{github.event.inputs.type}}, 'hotfix' || 'Hotfix')
+    if: "${{github.event.inputs.type == 'hotfix' || 'Hotfix'}}"
     name: 'Lag hotfix'
     runs-on: ubuntu-latest
     steps:
