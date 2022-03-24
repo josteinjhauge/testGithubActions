@@ -1,0 +1,14 @@
+feature: feature/*
+  # head: "feature/*"
+
+bugfix: ["bugfix/*", "fix/*"]
+  # head: ["bugfix/*", "fix/*"]
+
+release: release/*
+  # head: "release/*"
+
+hotfix: hotfix/*
+  # head: "hotfix/*"
+
+workflow: workflow/*
+  # head: "workflow/*"

@@ -45,5 +45,5 @@ jobs:
           base: develop
           title: Merge master into dev branch
           body: |
-            This PR merges the master branch back into dev.
+            This PR merges the master branch back into develop.
             This happens to ensure that the updates that happend on the release branch, i.e. CHANGELOG and manifest updates are also present on the dev branch.
